@@ -354,6 +354,17 @@ public class Runner {
         sys.path.insert(0, Py.newString(lib));
       }
 
+      // Include a folder called 'libraries_python' in the Python system path.
+      if (libDirs != null) {
+        for (final File libDir : libDirs) {
+          final String libDirPath = libDir.getAbsolutePath();
+          if (libDirPath.endsWith(("libraries")) && !libDirPath.contains("Processing.app")) {
+            final String pyLibDirPath = libDirPath.concat("_python");
+            sys.path.insert(0, Py.newString(pyLibDirPath));
+          }
+        }
+      }
+
       // Make fake "launcher" module available to sketches - will only work with standalone sketches
       interp.exec(LAUNCHER_TEXT);
 
